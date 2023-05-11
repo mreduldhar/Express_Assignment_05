@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Book Collection</title>
+  </head>
+  <body>
+    <h1>Book Collection</h1>
+    <form id="add-book-form">
+      <label for="title-input">Title:</label>
+      <input type="text" id="title-input" name="title">
+      <br>
+      <label for="author-input">Author:</label>
+      <input type="text" id="author-input" name="author">
+      <br>
+      <label for="published-date-input">Published Date:</label>
+      <input type="text" id="published-date-input" name="publishedDate">
+      <br>
+      <button type="submit">Add Book</button>
+    </form>
+    <ul id="book-list"></ul>
+    <script>
+      const form = document.querySelector('#add-book-form');
+      const bookList = document.querySelector('#book-list');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const titleInput = document.querySelector('#title-input');
+        const authorInput = document.querySelector('#author-input');
+        const publishedDateInput = document.querySelector('#published-date-input');
+
+        const response = await fetch('/books', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title: titleInput.value,
+            author: authorInput.value,
+            publishedDate: publishedDateInput.value
+          })
+        });
+
+        const book = await response.json();
+
+        const li = document.createElement('li');
+        li.textContent = `${book.title} by ${book.author}`;
+
+       
+    })
+    </script>
+    </body>
+</html>
